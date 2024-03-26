@@ -2,28 +2,27 @@ import pandas as pd
 import numpy as np
 import streamlit as st
 import plotly.express as px
-from statistics import mode
-import pickle
+import joblib
 
 # Load Data
 df = pd.read_csv('final_table.csv')
 # Load models
-models_path = ['Primary Type_BURGLARY_model.pkl',
-       'Primary Type_CRIM SEXUAL ASSAULT_model.pkl',
-       'Primary Type_ASSAULT_model.pkl', 'Primary Type_BATTERY_model.pkl',
-       'Primary Type_ROBBERY_model.pkl', 'Primary Type_INTIMIDATION_model.pkl',
-       'Primary Type_HOMICIDE_model.pkl', 'Primary Type_KIDNAPPING_model.pkl',
-       'Primary Type_HUMAN TRAFFICKING_model.pkl', 'Beat_1111_model.pkl',
-       'Beat_1112_model.pkl', 'Beat_1113_model.pkl', 'Beat_1114_model.pkl',
-       'Beat_1115_model.pkl', 'Beat_1121_model.pkl', 'Beat_1122_model.pkl',
-       'Beat_1123_model.pkl', 'Beat_1124_model.pkl', 'Beat_1125_model.pkl',
-       'Beat_1131_model.pkl', 'Beat_1132_model.pkl', 'Beat_1133_model.pkl',
-       'Beat_1134_model.pkl', 'Beat_1135_model.pkl', 'violent_crimes_mod.pkl']
+models_path = ['Primary Type_BURGLARY_model.joblib',
+       'Primary Type_CRIM SEXUAL ASSAULT_model.joblib',
+       'Primary Type_BULGARY_model.joblib',
+       'Primary Type_ROBBERY_model.joblib', 'Primary Type_INTIMIDATION_model.joblib',
+       'Primary Type_HOMICIDE_model.joblib', 'Primary Type_KIDNAPPING_model.joblib',
+       'Primary Type_HUMAN TRAFFICKING_model.joblib', 'Beat_1111_model.joblib',
+       'Beat_1112_model.joblib', 'Beat_1113_model.joblib', 'Beat_1114_model.joblib',
+       'Beat_1115_model.joblib', 'Beat_1121_model.joblib', 'Beat_1122_model.joblib',
+       'Beat_1123_model.joblib', 'Beat_1124_model.joblib', 'Beat_1125_model.joblib',
+       'Beat_1131_model.joblib', 'Beat_1132_model.joblib', 'Beat_1133_model.joblib',
+       'Beat_1134_model.joblib', 'Beat_1135_model.joblib', 'violent_crimes_mod.joblib']
 trained_models = []
 for i in models_path:
     with open(i, 'rb') as file:
-        model = pickle.load(file)
-        name = i.replace('_model.pkl', '')
+        model = joblib.load(file)
+        name = i.replace('_model.joblib', '')
         trained_models.append((name, model))
 
 with st.sidebar:
