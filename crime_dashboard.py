@@ -7,23 +7,21 @@ import joblib
 # Load Data
 df = pd.read_csv('final_table.csv')
 # Load models
-models_path = ['Primary Type_BURGLARY_model.joblib',
-       'Primary Type_CRIM SEXUAL ASSAULT_model.joblib',
-       'Primary Type_BULGARY_model.joblib',
-       'Primary Type_ROBBERY_model.joblib', 'Primary Type_INTIMIDATION_model.joblib',
-       'Primary Type_HOMICIDE_model.joblib', 'Primary Type_KIDNAPPING_model.joblib',
-       'Primary Type_HUMAN TRAFFICKING_model.joblib', 'Beat_1111_model.joblib',
-       'Beat_1112_model.joblib', 'Beat_1113_model.joblib', 'Beat_1114_model.joblib',
-       'Beat_1115_model.joblib', 'Beat_1121_model.joblib', 'Beat_1122_model.joblib',
-       'Beat_1123_model.joblib', 'Beat_1124_model.joblib', 'Beat_1125_model.joblib',
-       'Beat_1131_model.joblib', 'Beat_1132_model.joblib', 'Beat_1133_model.joblib',
-       'Beat_1134_model.joblib', 'Beat_1135_model.joblib', 'violent_crimes_mod.joblib']
+models_path = ['Primary Type_BURGLARY_model.joblib.gz',
+       'Primary Type_CRIM SEXUAL ASSAULT_model.joblib.gz',
+       'Primary Type_ROBBERY_model.joblib.gz', 'Primary Type_INTIMIDATION_model.joblib.gz',
+       'Primary Type_HOMICIDE_model.joblib.gz', 'Primary Type_KIDNAPPING_model.joblib.gz',
+       'Primary Type_HUMAN TRAFFICKING_model.joblib.gz', 'Beat_1111_model.joblib.gz',
+       'Beat_1112_model.joblib.gz', 'Beat_1113_model.joblib.gz', 'Beat_1114_model.joblib.gz',
+       'Beat_1115_model.joblib.gz', 'Beat_1121_model.joblib.gz', 'Beat_1122_model.joblib.gz',
+       'Beat_1123_model.joblib.gz', 'Beat_1124_model.joblib.gz', 'Beat_1125_model.joblib.gz',
+       'Beat_1131_model.joblib.gz', 'Beat_1132_model.joblib.gz', 'Beat_1133_model.joblib.gz',
+       'Beat_1134_model.joblib.gz', 'Beat_1135_model.joblib.gz', 'n_crimes_model.joblib.gz']
 trained_models = []
-for i in models_path:
-    with open(i, 'rb') as file:
-        model = joblib.load(file)
-        name = i.replace('_model.joblib', '')
-        trained_models.append((name, model))
+for file in models_path:
+    model = joblib.load(file)
+    name = file.replace('.joblib.gz', '')
+    trained_models.append((name, model))
 
 with st.sidebar:
     # App Title
