@@ -8,6 +8,7 @@ import plotly.graph_objects as go
 
 # Load Data
 df = pd.read_csv('final_table.csv')
+beat_df = pd.read_csv("beat_table.csv")
 # Load models
 models_path = ['Primary Type_BURGLARY_model.joblib.gz',
        'Primary Type_CRIM SEXUAL ASSAULT_model.joblib.gz',
@@ -212,14 +213,62 @@ dy = col3.selectbox("Day of the Week", full_calendar['DayOfWeek'].unique().tolis
 hr = col4.selectbox("Hour", full_calendar['hour'].unique().tolist())
 plce = col5.number_input("Top Areas", 0, 10, 3)
 
-fig2 = go.Figure(go.Scattermapbox(
-    mode = "lines", fill = "toself",
-    lon = [-10, -10, 8, 8, -10, None, 30, 30, 50, 50, 30, None, 100, 100, 80, 80, 100],
-    lat = [30, 6, 6, 30, 30,    None, 20, 30, 30, 20, 20, None, 40, 50, 50, 40, 40]))
+# Filter data and predict
+day_week_f = 'DayOfWeek_' + dy
+hour_f = 'hour_' + hr
+new_obs_filtered = new_obs[(new_obs[day_week_f] == True) & (new_obs[hour_f] == True)]
 
-fig2.update_layout(
-    mapbox = {'style': "open-street-map", 'center': {'lon': 30, 'lat': 30}, 'zoom': 2},
+selected_model_p = None
+beat_counts = {}
+for model_name, model in trained_models:
+    if 'Beat' in model_name:
+        selected_model_p = model
+        count = sum(selected_model.predict(new_obs))
+        beat_counts[model_name.replace("_model", "").replace("Beat_","")] = round(count)
+
+beat = pd.DataFrame(list(beat_counts.items()), columns=['Beat', 'Value'])
+beat = beat.sort_values('Value').head(plce)
+
+# Find all the latitude and longitude borders of all the chicago beats
+def create_polygon(df):
+    polygons = []
+    for i in range(len(df)):
+        lat = [df.loc[i, "max_lat"], df.loc[i, "min_lat"], df.loc[i, "min_lat"], df.loc[i, "max_lat"], df.loc[i, "max_lat"], None]
+        lon = [df.loc[i, "max_lon"], df.loc[i, "max_lon"], df.loc[i, "min_lon"], df.loc[i, "min_lon"], df.loc[i, "max_lon"], None]
+        polygons.append({'lat': lat, 'lon': lon})
+    return polygons
+
+# Create polygons from coordinates
+polygons = create_polygon(beat_df)
+
+def convert_to_plotly_format(polygons):
+    lon = []
+    lat = []
+    
+    for polygon in polygons:
+        lon.extend(polygon['lon'])
+        lat.extend(polygon['lat'])
+    
+    # Add None between polygons to separate them
+    lon.append(None)
+    lat.append(None)
+    
+    return lon, lat
+
+longitute, latitude = convert_to_plotly_format(polygons)
+        
+
+# If the selected model is found
+import plotly.graph_objects as go
+
+fig = go.Figure(go.Scattermapbox(
+    mode = "lines", fill = "toself",
+    lon = longitute,
+    lat = latitude))
+
+fig.update_layout(
+    mapbox = {'style': "open-street-map", 'center': {'lon': -87.7257, 'lat': 41.8877}, 'zoom': 12},
     showlegend = False,
     margin = {'l':0, 'r':0, 'b':0, 't':0})
 
-st.plotly_chart(fig2)
+st.plotly_chart(fig)
