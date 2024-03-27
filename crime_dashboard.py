@@ -238,8 +238,10 @@ def create_polygon(df):
         polygons.append({'lat': lat, 'lon': lon})
     return polygons
 
+beat_new = beat_df[beat_df['Beat'] in beat['Beat']]
+
 # Create polygons from coordinates
-polygons = create_polygon(beat_df)
+polygons = create_polygon(beat_new)
 
 def convert_to_plotly_format(polygons):
     lon = []
