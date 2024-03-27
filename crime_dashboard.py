@@ -3,25 +3,26 @@ import numpy as np
 import streamlit as st
 import plotly.express as px
 import joblib
+import statistics as stat
 
 # Load Data
 df = pd.read_csv('final_table.csv')
-# Load models
-models_path = ['Primary Type_BURGLARY_model.joblib.gz',
-       'Primary Type_CRIM SEXUAL ASSAULT_model.joblib.gz',
-       'Primary Type_ROBBERY_model.joblib.gz', 'Primary Type_INTIMIDATION_model.joblib.gz',
-       'Primary Type_HOMICIDE_model.joblib.gz', 'Primary Type_KIDNAPPING_model.joblib.gz',
-       'Primary Type_HUMAN TRAFFICKING_model.joblib.gz', 'Beat_1111_model.joblib.gz',
-       'Beat_1112_model.joblib.gz', 'Beat_1113_model.joblib.gz', 'Beat_1114_model.joblib.gz',
-       'Beat_1115_model.joblib.gz', 'Beat_1121_model.joblib.gz', 'Beat_1122_model.joblib.gz',
-       'Beat_1123_model.joblib.gz', 'Beat_1124_model.joblib.gz', 'Beat_1125_model.joblib.gz',
-       'Beat_1131_model.joblib.gz', 'Beat_1132_model.joblib.gz', 'Beat_1133_model.joblib.gz',
-       'Beat_1134_model.joblib.gz', 'Beat_1135_model.joblib.gz', 'n_crimes_model.joblib.gz']
-trained_models = []
-for file in models_path:
-    model = joblib.load(file)
+# Load stat.models
+stat.models_path = ['Primary Type_BURGLARY_stat.model.joblib.gz',
+       'Primary Type_CRIM SEXUAL ASSAULT_stat.model.joblib.gz',
+       'Primary Type_ROBBERY_stat.model.joblib.gz', 'Primary Type_INTIMIDATION_stat.model.joblib.gz',
+       'Primary Type_HOMICIDE_stat.model.joblib.gz', 'Primary Type_KIDNAPPING_stat.model.joblib.gz',
+       'Primary Type_HUMAN TRAFFICKING_stat.model.joblib.gz', 'Beat_1111_stat.model.joblib.gz',
+       'Beat_1112_stat.model.joblib.gz', 'Beat_1113_stat.model.joblib.gz', 'Beat_1114_stat.model.joblib.gz',
+       'Beat_1115_stat.model.joblib.gz', 'Beat_1121_stat.model.joblib.gz', 'Beat_1122_stat.model.joblib.gz',
+       'Beat_1123_stat.model.joblib.gz', 'Beat_1124_stat.model.joblib.gz', 'Beat_1125_stat.model.joblib.gz',
+       'Beat_1131_stat.model.joblib.gz', 'Beat_1132_stat.model.joblib.gz', 'Beat_1133_stat.model.joblib.gz',
+       'Beat_1134_stat.model.joblib.gz', 'Beat_1135_stat.model.joblib.gz', 'n_crimes_stat.model.joblib.gz']
+trained_stat.models = []
+for file in stat.models_path:
+    stat.model = joblib.load(file)
     name = file.replace('.joblib.gz', '')
-    trained_models.append((name, model))
+    trained_stat.models.append((name, stat.model))
 
 with st.sidebar:
     # App Title
@@ -31,21 +32,21 @@ with st.sidebar:
     st.markdown('The following filters appear to be significant at influencing the number of Violent Crimes per hour in the District 11 of Chicago. Play arround with them to see how they influence Violent Crimes')
 
     # Features
-    employ = st.slider('Unemployement', min_value=min(df['Unemployment']), max_value=max(df['Unemployment']), value=mode(df['Unemployment']), step=0.1)
-    temp = st.slider('Temperature', min_value=min(df['temperature']), max_value=max(df['temperature']), value=mode(df['temperature']), step=0.1)
-    humid = st.slider('Humidity', min_value=min(df['humidity']), max_value=max(df['humidity']), value=mode(df['humidity']), step=0.1)
-    feels = st.slider('Temp Feels Like', min_value=min(df['feels_like']), max_value=max(df['feels_like']), value=mode(df['feels_like']), step=0.1)
-    rn = st.slider('Rain', min_value=min(df['rain']), max_value=max(df['rain']), value=mode(df['rain']), step=0.01)
-    s_fall = st.slider('Snow Fall', min_value=min(df['snowfall']), max_value=max(df['snowfall']), value=mode(df['snowfall']), step=0.1)
-    s_dep = st.slider('Snow Depth', min_value=min(df['snow_depth']), max_value=max(df['snow_depth']), value=mode(df['snow_depth']), step=0.1)
-    cloud = st.slider('Cloud Cover', min_value=min(df['cloud_cover']), max_value=max(df['cloud_cover']), value=mode(df['cloud_cover']), step=0.1)
-    w_speed = st.slider('Wind Speed', min_value=min(df['wind_speed']), max_value=max(df['wind_speed']), value=mode(df['wind_speed']), step=0.1)
-    w_gusts = st.slider('Wind Gusts', min_value=min(df['wind_gusts']), max_value=max(df['wind_gusts']), value=mode(df['wind_gusts']), step=0.1)
-    wave_rad = st.slider('Shortwave Radiation', min_value=min(df['shortwave_radiation']), max_value=max(df['shortwave_radiation']), value=mode(df['shortwave_radiation']), step=0.1)
-    dir_rad = st.slider('Direct Radiation', min_value=min(df['direct_radiation']), max_value=max(df['direct_radiation']), value=mode(df['direct_radiation']), step=0.1)
-    dew = st.slider('Water Droplets', min_value=min(df['dew']), max_value=max(df['dew']), value=mode(df['dew']), step=0.01)
-    s_press = st.slider('Sea Level Pressure', min_value=min(df['sealevelpressure']), max_value=max(df['sealevelpressure']), value=mode(df['sealevelpressure']), step=0.1)
-    vis = st.slider('Visibility', min_value=min(df['visibility']), max_value=max(df['visibility']), value=mode(df['visibility']), step=0.1)
+    employ = st.slider('Unemployement', min_value=min(df['Unemployment']), max_value=max(df['Unemployment']), value=stat.mode(df['Unemployment']), step=0.1)
+    temp = st.slider('Temperature', min_value=min(df['temperature']), max_value=max(df['temperature']), value=stat.mode(df['temperature']), step=0.1)
+    humid = st.slider('Humidity', min_value=min(df['humidity']), max_value=max(df['humidity']), value=stat.mode(df['humidity']), step=0.1)
+    feels = st.slider('Temp Feels Like', min_value=min(df['feels_like']), max_value=max(df['feels_like']), value=stat.mode(df['feels_like']), step=0.1)
+    rn = st.slider('Rain', min_value=min(df['rain']), max_value=max(df['rain']), value=stat.mode(df['rain']), step=0.01)
+    s_fall = st.slider('Snow Fall', min_value=min(df['snowfall']), max_value=max(df['snowfall']), value=stat.mode(df['snowfall']), step=0.1)
+    s_dep = st.slider('Snow Depth', min_value=min(df['snow_depth']), max_value=max(df['snow_depth']), value=stat.mode(df['snow_depth']), step=0.1)
+    cloud = st.slider('Cloud Cover', min_value=min(df['cloud_cover']), max_value=max(df['cloud_cover']), value=stat.mode(df['cloud_cover']), step=0.1)
+    w_speed = st.slider('Wind Speed', min_value=min(df['wind_speed']), max_value=max(df['wind_speed']), value=stat.mode(df['wind_speed']), step=0.1)
+    w_gusts = st.slider('Wind Gusts', min_value=min(df['wind_gusts']), max_value=max(df['wind_gusts']), value=stat.mode(df['wind_gusts']), step=0.1)
+    wave_rad = st.slider('Shortwave Radiation', min_value=min(df['shortwave_radiation']), max_value=max(df['shortwave_radiation']), value=stat.mode(df['shortwave_radiation']), step=0.1)
+    dir_rad = st.slider('Direct Radiation', min_value=min(df['direct_radiation']), max_value=max(df['direct_radiation']), value=stat.mode(df['direct_radiation']), step=0.1)
+    dew = st.slider('Water Droplets', min_value=min(df['dew']), max_value=max(df['dew']), value=stat.mode(df['dew']), step=0.01)
+    s_press = st.slider('Sea Level Pressure', min_value=min(df['sealevelpressure']), max_value=max(df['sealevelpressure']), value=stat.mode(df['sealevelpressure']), step=0.1)
+    vis = st.slider('Visibility', min_value=min(df['visibility']), max_value=max(df['visibility']), value=stat.mode(df['visibility']), step=0.1)
 
 
     # Warning message
@@ -169,18 +170,18 @@ new_obs = new_obs[['Year', 'moonphase', 'temperature', 'humidity', 'feels_like',
        'is_holiday_1', 'is_full_moon_0', 'is_full_moon_1', 'is_day_0',
        'is_day_1']]
 
-# Select the model from the list based on the crime type
-selected_model = None
-for model_name, model in trained_models:
-    if 'n_crimes_model' in model_name:
-        selected_model = model
+# Select the stat.model from the list based on the crime type
+selected_stat.model = None
+for stat.model_name, stat.model in trained_stat.models:
+    if 'n_crimes_stat.model' in stat.model_name:
+        selected_stat.model = stat.model
         break
-    elif 'Primary Type_' + v_type + '_model' in model_name:
-        selected_model = model
+    elif 'Primary Type_' + v_type + '_stat.model' in stat.model_name:
+        selected_stat.model = stat.model
         break
 
-# If the selected model is found
-predictions = selected_model.predict(new_obs)
+# If the selected stat.model is found
+predictions = selected_stat.model.predict(new_obs)
 
 # Show heatmap
 matrix = np.array(predictions).reshape(7, 24)
@@ -230,7 +231,7 @@ plce = col5.selectbox("Number of Top areas with Violent Crime", ['n_crimes','CRI
 #     'assists': 'mean',
 #     'steals': 'mean',
 #     'blocks': 'mean',
-#     'b_strength': lambda x: mode(x)
+#     'b_strength': lambda x: stat.mode(x)
 # }).reset_index()
 
 # # Function that find closest height and outputs a filtered table with that height
