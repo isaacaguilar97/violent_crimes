@@ -115,7 +115,7 @@ full_calendar = full_calendar.merge(week_concatenated[['Week', 'weeks']], on='We
 
 # Filters
 col1, col2 = st.columns(2)
-wks = col1.selectbox("Select Week", full_calendar['weeks'].unique().tolist(), index=12)
+wks = col1.selectbox("Select Week", full_calendar['weeks'].unique().tolist(), index=11)
 v_type = col2.selectbox("Violent Crime Type", ['ROBBERY', 'INTIMIDATION', 'CRIM SEXUAL ASSAULT','HOMICIDE', 'KIDNAPPING', 'HUMAN TRAFFICKING', 'n_crimes'])
 
 # Filter data
@@ -209,7 +209,7 @@ st.header('Where is crime happening?')
 col3, col4, col5 = st.columns(3)
 dy = col3.selectbox("Day of the Week", full_calendar['DayOfWeek'].unique().tolist())
 hr = col4.selectbox("Hour", full_calendar['hour'].unique().tolist())
-plce = col5.number_input("# of Top Areas", 0, 10)
+plce = col5.number_input("Top Areas", 0, 10, 3)
 
 
 # if h == 'meters':
