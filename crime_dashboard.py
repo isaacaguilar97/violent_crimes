@@ -4,6 +4,7 @@ import streamlit as st
 import plotly.express as px
 import joblib
 import statistics as stat
+import plotly.graph_objects as go
 
 # Load Data
 df = pd.read_csv('final_table.csv')
@@ -211,111 +212,14 @@ dy = col3.selectbox("Day of the Week", full_calendar['DayOfWeek'].unique().tolis
 hr = col4.selectbox("Hour", full_calendar['hour'].unique().tolist())
 plce = col5.number_input("Top Areas", 0, 10, 3)
 
+fig2 = go.Figure(go.Scattermapbox(
+    mode = "lines", fill = "toself",
+    lon = [-10, -10, 8, 8, -10, None, 30, 30, 50, 50, 30, None, 100, 100, 80, 80, 100],
+    lat = [30, 6, 6, 30, 30,    None, 20, 30, 30, 20, 20, None, 40, 50, 50, 40, 40]))
 
-# if h == 'meters':
-#     height = col4.slider('Select your height', min_value=1.5, max_value=2.2, value=1.75, step=0.01)
-# else:
-#     height = col4.slider('Select your height', min_value=70.0, max_value=86.0, value=78.5, step=0.1)
+fig2.update_layout(
+    mapbox = {'style': "open-street-map", 'center': {'lon': 30, 'lat': 30}, 'zoom': 2},
+    showlegend = False,
+    margin = {'l':0, 'r':0, 'b':0, 't':0})
 
-# # Filter position and performance
-# result_df = final_df[(final_df['pos'] == pos1) & (final_df['performance'] == perf)]
-
-# # Group by hieght
-# result_df = result_df.groupby([unit_dic[h]]).agg({
-#     'points': 'mean',
-#     'min': 'mean',
-#     'fgp': 'mean',
-#     'ftp': 'mean',
-#     'tpp': 'mean',
-#     'totReb': 'mean',
-#     'assists': 'mean',
-#     'steals': 'mean',
-#     'blocks': 'mean',
-#     'b_strength': lambda x: mode(x)
-# }).reset_index()
-
-# # Function that find closest height and outputs a filtered table with that height
-# def find_closest_height(df, target_height, tolerance=0.01):
-#     # Check if the target height is present in the DataFrame
-#     if target_height in df[unit_dic[h]].values:
-#         return df[df[unit_dic[h]] == target_height]
-    
-#     # If not, find the closest height within the specified tolerance
-#     lower_height = target_height - tolerance
-#     upper_height = target_height + tolerance
-    
-#     # Check if there are observations for the lower and upper heights
-#     lower_obs = df[(df[unit_dic[h]] >= lower_height) & (df[unit_dic[h]] <= target_height)]
-#     upper_obs = df[(df[unit_dic[h]] <= upper_height) & (df[unit_dic[h]] >= target_height)]
-    
-#     # If both lower and upper observations are empty, and target_height is greater than max height, handle it
-#     if lower_obs.empty and upper_obs.empty:
-#         max_height = df[unit_dic[h]].max()
-#         if target_height > max_height:
-#             return df[df[unit_dic[h]] == max_height]
-#         else:
-#             return find_closest_height(df, target_height + 0.01, tolerance)
-    
-#     # If either lower or upper observations are not empty, return the one with observations
-#     if not lower_obs.empty:
-#         return lower_obs
-#     else:
-#         return upper_obs
-
-# if height is None:
-#     st.write('Enter your Height')
-# else:
-#     # Filter by height
-#     skills = find_closest_height(result_df, height, tolerance=0.01)
-
-#     # Round up the values in the specified columns
-#     columns_to_round_up = ['points', 'min', 'totReb', 'assists', 'steals', 'blocks']
-#     skills[columns_to_round_up] = np.ceil(skills[columns_to_round_up])
-
-#     #Round to to decimal values
-#     columns_to_round_up = ['fgp', 'ftp', 'tpp']
-#     skills[columns_to_round_up] = round(skills[columns_to_round_up], 2)
-
-#     # Remove height column and make table vertical
-#     skills = skills.drop(unit_dic[h], axis=1).T
-
-#     # Rename column
-#     skills.rename(columns={skills.columns[0]: 'Average Value per Game'}, inplace=True)
-
-#     # Show table
-#     st.table(skills)
-
-# with st.expander("Explore a little more"):
-# ##### Data Information #####
-#     st.header('Interesting Data Insights')
-
-#     # Position Count
-#     pos_counts = final_df['pos'].value_counts().reset_index()
-#     pos_counts.columns = ['Position', 'Frequency']
-#     fig2 = px.bar(pos_counts, x='Position', y='Frequency', labels={'Position': 'Positions', 'Frequency': 'Frequency'}, 
-#                 title='Position Count', color_discrete_sequence=px.colors.sequential.Viridis)
-#     st.plotly_chart(fig2)
-
-#     # Biggest Strengths Distribution per Position
-#     fig3 = px.box(final_df, x='pos', y=unit_dic[h],
-#              color='pos',
-#              labels={'pos': 'Position', unit_dic[h]: f'Height ({h})'},
-#              title='Boxplot of Height per Position')
-#     st.plotly_chart(fig3)
-
-#     # Biggest Strengths Distribution per Position
-#     fig4 = px.box(final_df, x=unit_dic[h], y='b_strength',
-#              color='b_strength',
-#              labels={unit_dic[h]: 'Height', 'b_strength': 'Biggest Strength'},
-#              title='Boxplot of Height per Biggest Strength')
-#     st.plotly_chart(fig4)
-
-#     # Points vs Performance
-#     fig5 = px.scatter(final_df, x='plusMinus', y='points', title='Scatter Plot of Points vs Performance',
-#                     labels={'plusMinus': 'Performance', 'points': 'Points'})
-#     st.plotly_chart(fig5)
-
-# # Final Words
-# st.markdown('Hope you enjoyed this dashboard, and were able to learn a little more about NBA players and yourself. If you want to learn more about the code I used for this dashboard, you can got to my [GitHub Repository](https://github.com/isaacaguilar97/you-in-nba). You can also go to learn more about the Exploratory Data Analysis that helped me build this Dashboard with my article in my Blog called [My NBA Exploratory Data Analysis](https://isaacaguilar97.github.io/my-blog/My-NBA-Exploratory-Data-Analysis)')
-
-# st.write('Thank you for exploring this Data with me. Now you know what it will take you to become an NBA player! :basketball: You can do it!')
+st.plotly_chart(fig2)
