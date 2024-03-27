@@ -7,22 +7,22 @@ import statistics as stat
 
 # Load Data
 df = pd.read_csv('final_table.csv')
-# Load stat.models
-stat.models_path = ['Primary Type_BURGLARY_stat.model.joblib.gz',
-       'Primary Type_CRIM SEXUAL ASSAULT_stat.model.joblib.gz',
-       'Primary Type_ROBBERY_stat.model.joblib.gz', 'Primary Type_INTIMIDATION_stat.model.joblib.gz',
-       'Primary Type_HOMICIDE_stat.model.joblib.gz', 'Primary Type_KIDNAPPING_stat.model.joblib.gz',
-       'Primary Type_HUMAN TRAFFICKING_stat.model.joblib.gz', 'Beat_1111_stat.model.joblib.gz',
-       'Beat_1112_stat.model.joblib.gz', 'Beat_1113_stat.model.joblib.gz', 'Beat_1114_stat.model.joblib.gz',
-       'Beat_1115_stat.model.joblib.gz', 'Beat_1121_stat.model.joblib.gz', 'Beat_1122_stat.model.joblib.gz',
-       'Beat_1123_stat.model.joblib.gz', 'Beat_1124_stat.model.joblib.gz', 'Beat_1125_stat.model.joblib.gz',
-       'Beat_1131_stat.model.joblib.gz', 'Beat_1132_stat.model.joblib.gz', 'Beat_1133_stat.model.joblib.gz',
-       'Beat_1134_stat.model.joblib.gz', 'Beat_1135_stat.model.joblib.gz', 'n_crimes_stat.model.joblib.gz']
-trained_stat.models = []
-for file in stat.models_path:
-    stat.model = joblib.load(file)
+# Load models
+models_path = ['Primary Type_BURGLARY_model.joblib.gz',
+       'Primary Type_CRIM SEXUAL ASSAULT_model.joblib.gz',
+       'Primary Type_ROBBERY_model.joblib.gz', 'Primary Type_INTIMIDATION_model.joblib.gz',
+       'Primary Type_HOMICIDE_model.joblib.gz', 'Primary Type_KIDNAPPING_model.joblib.gz',
+       'Primary Type_HUMAN TRAFFICKING_model.joblib.gz', 'Beat_1111_model.joblib.gz',
+       'Beat_1112_model.joblib.gz', 'Beat_1113_model.joblib.gz', 'Beat_1114_model.joblib.gz',
+       'Beat_1115_model.joblib.gz', 'Beat_1121_model.joblib.gz', 'Beat_1122_model.joblib.gz',
+       'Beat_1123_model.joblib.gz', 'Beat_1124_model.joblib.gz', 'Beat_1125_model.joblib.gz',
+       'Beat_1131_model.joblib.gz', 'Beat_1132_model.joblib.gz', 'Beat_1133_model.joblib.gz',
+       'Beat_1134_model.joblib.gz', 'Beat_1135_model.joblib.gz', 'n_crimes_model.joblib.gz']
+trained_models = []
+for file in models_path:
+    model = joblib.load(file)
     name = file.replace('.joblib.gz', '')
-    trained_stat.models.append((name, stat.model))
+    trained_models.append((name, model))
 
 with st.sidebar:
     # App Title
@@ -170,18 +170,18 @@ new_obs = new_obs[['Year', 'moonphase', 'temperature', 'humidity', 'feels_like',
        'is_holiday_1', 'is_full_moon_0', 'is_full_moon_1', 'is_day_0',
        'is_day_1']]
 
-# Select the stat.model from the list based on the crime type
-selected_stat.model = None
-for stat.model_name, stat.model in trained_stat.models:
-    if 'n_crimes_stat.model' in stat.model_name:
-        selected_stat.model = stat.model
+# Select the model from the list based on the crime type
+selected_model = None
+for model_name, model in trained_models:
+    if 'n_crimes_model' in model_name:
+        selected_model = model
         break
-    elif 'Primary Type_' + v_type + '_stat.model' in stat.model_name:
-        selected_stat.model = stat.model
+    elif 'Primary Type_' + v_type + '_model' in model_name:
+        selected_model = model
         break
 
-# If the selected stat.model is found
-predictions = selected_stat.model.predict(new_obs)
+# If the selected model is found
+predictions = selected_model.predict(new_obs)
 
 # Show heatmap
 matrix = np.array(predictions).reshape(7, 24)
@@ -231,7 +231,7 @@ plce = col5.selectbox("Number of Top areas with Violent Crime", ['n_crimes','CRI
 #     'assists': 'mean',
 #     'steals': 'mean',
 #     'blocks': 'mean',
-#     'b_strength': lambda x: stat.mode(x)
+#     'b_strength': lambda x: mode(x)
 # }).reset_index()
 
 # # Function that find closest height and outputs a filtered table with that height
