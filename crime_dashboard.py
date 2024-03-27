@@ -29,7 +29,7 @@ with st.sidebar:
     st.title('Significant Factors')
 
     # Description
-    st.markdown('The following filters appear to be significant at influencing the number of Violent Crimes per hour in the District 11 of Chicago. Play arround with them to see how they influence Violent Crimes')
+    st.markdown('The following filters appear to be significant at influencing the number of Violent Crimes per hour in the District 11 of Chicago. Play arround with them to see how they influence Violent Crimes. \n')
 
     # Features
     employ = st.slider('Unemployement', min_value=min(df['Unemployment']), max_value=max(df['Unemployment']), value=stat.mode(df['Unemployment']), step=.1)
@@ -57,7 +57,7 @@ with st.sidebar:
     #     st.table(abb)
 
 # Header 1
-st.header('Chicago Crimes Distric 11')
+st.header('Chicago Crimes - Distric 11')
 
 st.markdown('When is Crime Happening?')
 
@@ -95,7 +95,7 @@ full_calendar = pd.DataFrame({
     'Date': calendar,
     'Year': calendar.year,
     'month': calendar.strftime('%b'),
-    'DayOfWeek': calendar.strftime('%a'),  # Monday=0, Sunday=6
+    'DayOfWeek': calendar.strftime('%a'), 
     'hour': calendar.hour.astype('category'),
     'Week' : [date.isocalendar()[1] for date in calendar], 
     'is_holiday': [1 if str(date)[:10] in holiday_dates else 0 for date in calendar],  # Check if date is a holiday
@@ -115,8 +115,8 @@ full_calendar = full_calendar.merge(week_concatenated[['Week', 'weeks']], on='We
 
 # Filters
 col1, col2 = st.columns(2)
-wks = col1.selectbox("Select Week", full_calendar['weeks'].unique().tolist())
-v_type = col2.selectbox("Violent Crime Type", ['n_crimes','CRIM SEXUAL ASSAULT', 'ASSAULT', 'BATTERY', 'ROBBERY', 'INTIMIDATION', 'HOMICIDE', 'KIDNAPPING', 'HUMAN TRAFFICKING'])
+wks = col1.selectbox("Select Week", full_calendar['weeks'].unique().tolist(), index=12)
+v_type = col2.selectbox("Violent Crime Type", ['ROBBERY', 'INTIMIDATION', 'CRIM SEXUAL ASSAULT','HOMICIDE', 'KIDNAPPING', 'HUMAN TRAFFICKING', 'n_crimes'])
 
 # Filter data
 new_obs_t = full_calendar[full_calendar['weeks'] == wks][['Year','month', 'DayOfWeek', 'hour', 'is_holiday', 'is_full_moon', 'is_day']]
@@ -209,7 +209,7 @@ st.header('Where is crime happening?')
 col3, col4, col5 = st.columns(3)
 dy = col3.selectbox("Day of the Week", full_calendar['DayOfWeek'].unique().tolist())
 hr = col4.selectbox("Hour", full_calendar['hour'].unique().tolist())
-plce = col5.selectbox("Number of Top areas with Violent Crime", ['n_crimes','CRIM SEXUAL ASSAULT', 'ASSAULT', 'BATTERY', 'ROBBERY', 'INTIMIDATION', 'HOMICIDE', 'KIDNAPPING', 'HUMAN TRAFFICKING'])
+plce = col5.number_input("# of Top Areas", 0, 10)
 
 
 # if h == 'meters':
