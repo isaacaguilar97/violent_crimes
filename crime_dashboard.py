@@ -32,21 +32,21 @@ with st.sidebar:
     st.markdown('The following filters appear to be significant at influencing the number of Violent Crimes per hour in the District 11 of Chicago. Play arround with them to see how they influence Violent Crimes')
 
     # Features
-    employ = st.slider('Unemployement', min_value=min(df['Unemployment']), max_value=max(df['Unemployment']), value=stat.mode(df['Unemployment']), step=1)
-    temp = st.slider('Temperature', min_value=min(df['temperature']), max_value=max(df['temperature']), value=stat.mode(df['temperature']), step=1)
+    employ = st.slider('Unemployement', min_value=min(df['Unemployment']), max_value=max(df['Unemployment']), value=stat.mode(df['Unemployment']), step=.1)
+    temp = st.slider('Temperature', min_value=min(df['temperature']), max_value=max(df['temperature']), value=stat.mode(df['temperature']), step=.1)
     humid = st.slider('Humidity', min_value=min(df['humidity']), max_value=max(df['humidity']), value=stat.mode(df['humidity']), step=1)
-    feels = st.slider('Temp Feels Like', min_value=min(df['feels_like']), max_value=max(df['feels_like']), value=stat.mode(df['feels_like']), step=1)
+    feels = st.slider('Temp Feels Like', min_value=min(df['feels_like']), max_value=max(df['feels_like']), value=stat.mode(df['feels_like']), step=.1)
     rn = st.slider('Rain', min_value=min(df['rain']), max_value=max(df['rain']), value=stat.mode(df['rain']), step=0.1)
     s_fall = st.slider('Snow Fall', min_value=min(df['snowfall']), max_value=max(df['snowfall']), value=stat.mode(df['snowfall']), step=0.1)
     s_dep = st.slider('Snow Depth', min_value=min(df['snow_depth']), max_value=max(df['snow_depth']), value=stat.mode(df['snow_depth']), step=0.1)
     cloud = st.slider('Cloud Cover', min_value=min(df['cloud_cover']), max_value=max(df['cloud_cover']), value=stat.mode(df['cloud_cover']), step=1)
-    w_speed = st.slider('Wind Speed', min_value=min(df['wind_speed']), max_value=max(df['wind_speed']), value=stat.mode(df['wind_speed']), step=1)
-    w_gusts = st.slider('Wind Gusts', min_value=min(df['wind_gusts']), max_value=max(df['wind_gusts']), value=stat.mode(df['wind_gusts']), step=1)
-    wave_rad = st.slider('Shortwave Radiation', min_value=min(df['shortwave_radiation']), max_value=max(df['shortwave_radiation']), value=stat.mode(df['shortwave_radiation']), step=1)
-    dir_rad = st.slider('Direct Radiation', min_value=min(df['direct_radiation']), max_value=max(df['direct_radiation']), value=stat.mode(df['direct_radiation']), step=1)
-    dew = st.slider('Water Droplets', min_value=min(df['dew']), max_value=max(df['dew']), value=stat.mode(df['dew']), step=1)
-    s_press = st.slider('Sea Level Pressure', min_value=min(df['sealevelpressure']), max_value=max(df['sealevelpressure']), value=stat.mode(df['sealevelpressure']), step=1)
-    vis = st.slider('Visibility', min_value=min(df['visibility']), max_value=max(df['visibility']), value=stat.mode(df['visibility']), step=1)
+    w_speed = st.slider('Wind Speed', min_value=min(df['wind_speed']), max_value=max(df['wind_speed']), value=stat.mode(df['wind_speed']), step=.1)
+    w_gusts = st.slider('Wind Gusts', min_value=min(df['wind_gusts']), max_value=max(df['wind_gusts']), value=stat.mode(df['wind_gusts']), step=.1)
+    wave_rad = st.slider('Shortwave Radiation', min_value=min(df['shortwave_radiation']), max_value=max(df['shortwave_radiation']), value=stat.mode(df['shortwave_radiation']), step=.1)
+    dir_rad = st.slider('Direct Radiation', min_value=min(df['direct_radiation']), max_value=max(df['direct_radiation']), value=stat.mode(df['direct_radiation']), step=.1)
+    dew = st.slider('Water Droplets', min_value=min(df['dew']), max_value=max(df['dew']), value=stat.mode(df['dew']), step=.1)
+    s_press = st.slider('Sea Level Pressure', min_value=min(df['sealevelpressure']), max_value=max(df['sealevelpressure']), value=stat.mode(df['sealevelpressure']), step=.1)
+    vis = st.slider('Visibility', min_value=min(df['visibility']), max_value=max(df['visibility']), value=stat.mode(df['visibility']), step=.1)
 
 
     # Warning message
