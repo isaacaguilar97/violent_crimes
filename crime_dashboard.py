@@ -215,7 +215,7 @@ plce = col5.number_input("Top Areas", 0, 10, 3)
 
 # Filter data and predict
 day_week_f = 'DayOfWeek_' + dy
-hour_f = 'hour_' + hr
+hour_f = 'hour_' + str(hr)
 new_obs_filtered = new_obs[(new_obs[day_week_f] == True) & (new_obs[hour_f] == True)]
 
 selected_model_p = None
