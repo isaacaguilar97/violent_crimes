@@ -241,7 +241,7 @@ def create_polygon(df):
 beat_new = beat_df[beat_df['Beat'].isin((list(beat['Beat'].astype(int))))]
 
 # Create polygons from coordinates
-polygons = create_polygon(beat_df)
+polygons = create_polygon(beat_new)
 
 def convert_to_plotly_format(polygons):
     lon = []
